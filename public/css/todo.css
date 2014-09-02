@@ -1,0 +1,22 @@
+h1{
+	font-family: serif;
+	color: #991F5C;
+	text-decoration: underline;
+	
+}
+#header{
+	background-color:#000000;
+	color: #fff;
+	font-size: 1.5em;
+	font-family: Times;
+
+}
+body{
+	background-color: grey;
+	font-family: cursive;
+}
+
+ul{
+	list-style: cjk-ideographic;
+}
+
