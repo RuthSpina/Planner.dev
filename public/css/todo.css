@@ -5,14 +5,14 @@ h1{
 	
 }
 #header{
-	background-color:#000000;
+	/*background-color:#000000;*/
 	color: #fff;
 	font-size: 1.5em;
 	font-family: Times;
 
 }
 body{
-	background-color: grey;
+	background-color:#D7DBD8;
 	font-family: cursive;
 }
 
