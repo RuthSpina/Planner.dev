@@ -1,120 +1,40 @@
 <?php
-
-class AddressDataStore {
-    public $filename;
-    
-    function __construct($filename = 'data/address.csv'){
-         $this->filename = $filename;
-     }
-
-     function read_address_book(){
-        $people = [];
-        $handle = fopen($this->filename, 'r');
-        while (!feof($handle)){
-            $row = fgetcsv($handle);
-            if (!empty($row)){
-                $people[]= $row;
-            }
-        }
-        fclose($handle);
-        return $people;
-     }
-     function write_address_book($people){
-        $handle = fopen($this->filename, 'w');
-        foreach ($people as $person) {
-           fputcsv($handle, $person);
-        }
-        fclose($handle);
-    }
-}
-
-$new_book = new AddressDataStore();
-
-$people = $new_book->read_address_book();
-
-if(!empty($_POST)){
-    $newAddress = [
-        $_POST['first_name'],
-        $_POST['last_name'],
-        $_POST['address'],
-        $_POST['city'],
-        $_POST['zip'],
-        $_POST['phone']
-    ];
-$people[] = $newAddress;
-$new_book->write_address_book($people);
-}
-
-if(isset($_GET['remove'])){
-    $keyToRemove=$_GET['remove'];
-    unset($people[$keyToRemove]);
-    $people = array_values($people);
-    save_to_csv($people);
-}
-// Verify there were uploaded files and no errors
-if (count($_FILES) > 0 && $_FILES['file1']['error'] === UPLOAD_ERR_OK){
-    
-    $upload = $_FILES['file1'];
-
-    //directing where php will save uploaded file
-    $uploadPath = '/vagrant/sites/planner.dev/public/data/address.csv';
-
-    //this ensures that you are only identifying the new file by the name not including the path
-    $uploadBasename = basename($_FILES['file1']['name']);
-
-    //names the new file, which was determined by the concatination of the uploaded file and path
-    $newFile = $uploadPath . $uploadBasename;
-
-    //This moves the file to the temp folder
-    move_uploaded_file($_FILES['file1']['tmp_name'], $newFile);
-    $newFile = new AddressDataStore($newFile);
-    $upload_items= $newFile->read_address_book();
-    $people = array_merge($people, $upload_items);
-    $newFile ->write_address_book($people);
-}
-
-// Check if we saved a file
-if (isset($saved_filename)) {
-    // If we did, show a link to the uploaded file
-    echo "<p>You can download your file <a href='/uploads/{$filename}'>here</a>.</p>";
-}
-
+require_once 'address_book_code.php';
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Address Book</title>
-    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href='http://fonts.googleapis.com/css?family=Nixie+One' rel='stylesheet' type='text/css'>
-   
+    <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 <style>
-#entry{
-    text-align:center;
-    width: 577px ;
-  margin-left: auto ;
-  margin-right: auto ;
-  background:azure;
+.top{
+    margin-left: 468px;
 }
-body{
-    background:gainsboro;
+.row{
+    margin-left:91px;
 }
 </style>
-
 </head>
 <body>
-    <div id="entry">
-<h1>Address Book</h1>
-<table>
+    <div class="jumbotron">
+  <div class="top">
+     <h1>Address Book:</h1><br>
     <ol>
     <? foreach($people as $key => $person):?>
  <li><?= "<a href=". "?remove=$key" .">Remove</a>-".implode($person, "      ");?></li>
     <? endforeach; ?>
     </ol>
-</table>
 </div>
+</div>
+<div class="row">
+  <div class=".col-md-6 .col-md-offset-3">
     <h1>New Entry:</h1>
 <form method="POST" action="/address_book.php">
 <div><label for="first_name">First Name:</label>
@@ -150,4 +70,6 @@ body{
     <input type="file" id="file1" name="file1"><br>
     <input type="submit" value="Upload">
 </form>
+</div>
+</div>
 
