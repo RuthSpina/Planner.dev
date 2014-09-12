@@ -1,0 +1,46 @@
+
+
+class address_book
+{
+    public $firstName;
+    public $lastName;
+    public $address;
+    public $city
+    public $state
+    public $zip;
+    public $phone;
+    
+
+    public function __construct($firstName, $lastName, $address, $city, $state, $zip, $phone)
+    {
+        $this->firstName = $firstName;
+        $this->lastName  = $lastName;
+        $this->address  = $address;
+        $this->city  = $city;
+        $this->state  = $state;
+        $this->zip  = $zip;
+        $this->phone  = $phone;
+    }
+ 
+    public function sayHello()
+    {
+        return "Hello {$this->firstName} {$this->lastName}";
+    }
+}
+
+$fName   = new address_book();
+$lName = new address_book();
+$address   = new address_book();
+$city   = new address_book();
+$state   = new address_book();
+$zip   = new address_book();
+$phone   = new address_book();
+
+echo $fName->firstName;
+echo $lName->sayHello() . PHP_EOL;
+echo $address->sayHello() . PHP_EOL;
+echo $city->sayHello() . PHP_EOL;
+echo $state->sayHello() . PHP_EOL;
+echo $zip->sayHello() . PHP_EOL;
+echo $phone->sayHello() . PHP_EOL;
+
