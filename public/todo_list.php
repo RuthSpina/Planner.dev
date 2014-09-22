@@ -1,36 +1,21 @@
 <?php
+require_once "../inc/filestore.php";
+// define('FILENAME', 'data/data1.txt');
 
-define('FILENAME', 'data/data1.txt');
 
-// update list
-function open_file($file_input = FILENAME) {
-    $handle = fopen($file_input, 'r');
-    $content = trim(fread($handle, filesize($file_input)));
-    $new_list = explode("\n", $content);
-    fclose($handle);
-    return $new_list;
-}
+$newList = new Filestore('data/data1.txt');
+$items = $newList->read_lines();
 
-//save list to filename
-function save_to_file($items, $file_path = FILENAME) {
-    $handle = fopen($file_path, 'w');
-    foreach($items as $item){
-        fwrite($handle, strip_tags($item) . "\n");
-    }
-    fclose($handle);
-}
-
-$items = open_file();
 if (isset($_POST['new_item'])){
     $items[]= $_POST['new_item'];
-    save_to_file($items);
+    $newList->write_lines($items);
 }
 
 if(isset($_GET['remove'])){
     $keyToRemove=$_GET['remove'];
     unset($items[$keyToRemove]);
     $items = array_values($items);
-    save_to_file($items);
+    $newList->write_lines($items);
 }
 
 //$items = [];
@@ -48,17 +33,17 @@ if (count($_FILES) > 0 && $_FILES['file1']['error'] === UPLOAD_ERR_OK && $_FILES
     $uploadBasename = basename($upload['name']);
 
     //names the new file, which was determined by the concatination of the uploaded file and path
-    $newFile = $uploadPath . $uploadBasename;
+    $newList = $uploadPath . $uploadBasename;
 
     //This moves the file to the temp folder
-    move_uploaded_file($upload['tmp_name'], $newFile);
+    move_uploaded_file($upload['tmp_name'], $newList);
 
     // grab new items in file converted to array
-    $newitems = open_file('uploads/' . $uploadBasename);
+    $newList = read_lines('uploads/' . $uploadBasename);
     
     // grab new file and convert contents to array
-    $items = array_merge($items, $newitems);
-    save_to_file($items);
+    $items = array_merge($items, $newList);
+    write_lines($items);
 }
 
 // Check if we saved a file
