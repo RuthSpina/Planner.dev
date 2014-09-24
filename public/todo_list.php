@@ -23,7 +23,7 @@ if(isset($_GET['remove'])){
 
 // Verify there were uploaded files and no errors
 if (count($_FILES) > 0 && $_FILES['file1']['error'] === UPLOAD_ERR_OK && $_FILES['file1']['type'] === 'text/plain'){
-    
+
     $upload = $_FILES['file1'];
 
     //directing where php will save uploaded file
@@ -40,7 +40,7 @@ if (count($_FILES) > 0 && $_FILES['file1']['error'] === UPLOAD_ERR_OK && $_FILES
 
     // grab new items in file converted to array
     $newList = read_lines('uploads/' . $uploadBasename);
-    
+
     // grab new file and convert contents to array
     $items = array_merge($items, $newList);
     write_lines($items);
