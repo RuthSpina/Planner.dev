@@ -1,7 +1,7 @@
 <?php
 require_once 'address_book_code.php';
 
-$newBook = new AddressDataStore('./data/test.csv');
+$newBook = new AddressDataStore('../data/test.csv');
 $people = $newBook->read_address_book();
 
 if(!empty($_POST)){
