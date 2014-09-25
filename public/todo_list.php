@@ -1,6 +1,7 @@
 <?php
-require_once "../inc/filestore.php";
-// define('FILENAME', 'data/data1.txt');
+require_once "../dbconnection_todo.php";
+require_once "todo_list_code.php";
+
 
 
 $newList = new Filestore('data/data1.txt');
@@ -17,9 +18,6 @@ if(isset($_GET['remove'])){
     $items = array_values($items);
     $newList->write_lines($items);
 }
-
-//$items = [];
-
 
 // Verify there were uploaded files and no errors
 if (count($_FILES) > 0 && $_FILES['file1']['error'] === UPLOAD_ERR_OK && $_FILES['file1']['type'] === 'text/plain'){
